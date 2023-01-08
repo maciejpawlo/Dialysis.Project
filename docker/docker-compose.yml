@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  dialysisapi:
+    image: ${DOCKER_REGISTRY-}dialysisapi
+    build:
+      context: ../src/Dialysis.API/
+    ports:
+      - "5002:80"
+      - "5003:443"
+    depends_on:
+        - dialysisdb
+    networks:
+        - dialysis-backend
+        - dialysis-frontend
+
+  dialysisdb:
+    container_name: dialysisdb
+    image: mcr.microsoft.com/azure-sql-edge
+    environment:
+      - "ACCEPT_EULA=1"
+      - "MSSQL_SA_PASSWORD=MyPass@word"
+    ports:
+      - "1433:1433"
+    hostname: dialysisdb
+    networks:
+        - dialysis-backend
+
+  dialysisui:
+    image: ${DOCKER_REGISTRY-}dialysisui
+    build: 
+      context: ../src/Dialysis.UI/
+    ports:
+      - "8080:80"
+    depends_on:
+      - dialysisapi
+    networks:
+      - dialysis-frontend
+
+networks:
+  dialysis-backend:
+    driver: bridge
+  dialysis-frontend:
+    driver: bridge

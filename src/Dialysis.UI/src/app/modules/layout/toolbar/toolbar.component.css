@@ -1,0 +1,18 @@
+.sidenav-toggle {
+  display: none;
+
+  padding: 0;
+  margin: 8px;
+  min-width: 56px;
+}
+
+.mat-icon {
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+::ng-deep.mat-fab .mat-button-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+}
