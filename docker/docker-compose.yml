@@ -1,18 +1,21 @@
 version: '3.4'
 
+x-dialysisapi-base: &dialysisapi-base
+  image: ${DOCKER_REGISTRY-}dialysisapi
+  build:
+    context: ../src/Dialysis.API/
+  depends_on:
+    - dialysisdb
+  networks:
+    - dialysis-backend
+    - dialysis-frontend
+
 services:
   dialysisapi:
-    image: ${DOCKER_REGISTRY-}dialysisapi
-    build:
-      context: ../src/Dialysis.API/
+    <<: *dialysisapi-base
     ports:
       - "5002:80"
       - "5003:443"
-    depends_on:
-        - dialysisdb
-    networks:
-        - dialysis-backend
-        - dialysis-frontend
 
   dialysisdb:
     container_name: dialysisdb
@@ -36,6 +39,12 @@ services:
       - dialysisapi
     networks:
       - dialysis-frontend
+
+  dialysis-migration:
+    <<: *dialysisapi-base
+    entrypoint: >
+     bash -c '/migration/wait-for-it.sh dialysisdb:1433 -- dotnet /migration/Dialysis.Migration.dll 
+     && dotnet /app/Dialysis.API.dll /seed'
 
 networks:
   dialysis-backend:
