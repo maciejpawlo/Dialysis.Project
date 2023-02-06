@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:MvxContentPage x:TypeArguments="viewModels:HomeViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+    xmlns:mvx="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
+    xmlns:local="clr-namespace:Dialysis.Mobile.UI.Pages"
+    x:Class="Dialysis.Mobile.UI.Pages.HomePage"
+    xmlns:viewModels="clr-namespace:Dialysis.Mobile.Core.ViewModels.Home;assembly=Dialysis.Mobile.Core"
+                      Title="Main page">
+    <ContentPage.ToolbarItems >
+        <ToolbarItem Text="Log out" Priority="0" Order="Primary" Command="{Binding LogoutCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding DeviceName}"   
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                FontSize="Title"
+                FontAttributes="Bold" 
+                IsVisible="{Binding IsDeviceConnected}"/>
+
+            <!--<CollectionView ItemsSource="{Binding DeviceList}" IsVisible="{Binding IsDeviceListVisible}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="20" HasShadow="True" BackgroundColor="White" Padding="10" BorderColor="LightGray">
+                            <Grid Padding="10" HorizontalOptions="FillAndExpand">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="ID: " Grid.Column="0" Grid.Row="0"/>
+                                <Label Text="{Binding Id}" Grid.Column="1" Grid.Row="0"/>
+                                <Label Text="Name: " Grid.Column="0" Grid.Row="1"/>
+                                <Label Text="{Binding Name}" Grid.Column="1" Grid.Row="1"/>
+                                <Button Text="Connect" Grid.ColumnSpan="2" Grid.Row="2" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=ConnectToDeviceCommand}" 
+                                        CommandParameter="{Binding Id}"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>-->
+
+            <Button Text="Start Examination"
+                Command="{Binding StartExamiantionCommand}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                FontSize="Large"
+                FontAttributes="Bold"    
+                HeightRequest="80"
+                IsVisible="{Binding IsDeviceConnected}"/>
+            
+            <Button Text="Scan devices"
+                Command="{Binding ScanAndConnectToDeviceCommand}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                FontSize="Large"
+                FontAttributes="Bold"
+                HeightRequest="80"
+                mvx:Bi.nd="IsEnabled !IsDeviceConnected"/>
+
+            <Button Text="Disconnect"
+                Command="{Binding DisconnectDeviceCommand}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                FontSize="Large"
+                FontAttributes="Bold"
+                HeightRequest="80" 
+                IsVisible="{Binding IsDeviceConnected}"/>
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</views:MvxContentPage>
